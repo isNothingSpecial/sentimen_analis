@@ -7,6 +7,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from textblob import TextBlob
 import re
 import nltk
+nltk.download('punkt')
 nltk.download('stopwords')
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
