@@ -1,15 +1,15 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import re
-import nltk
-from nltk.corpus import stopwords
-from nltk.stem import PorterStemmer
 from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.feature_extraction.text import TfidfVectorizer
 from textblob import TextBlob
+import re
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 
 # Function to analyze sentiment
 def analyze_sentiment(text):
@@ -38,7 +38,6 @@ def preprocessing(text):
 
 # Streamlit App
 def main():
-    nltk.download('stopwords')
     st.title("Aplikasi Sentiment Analysis dengan Dataset CSV")
 
     # Upload CSV file
@@ -61,7 +60,7 @@ def main():
                 st.write("Hasil Analisis Sentimen:")
                 st.write(df)
                 
-                # Create a bar chart using Matplotlib
+                # Create a bar chart using Streamlit
                 st.write("Visualisasi Rekap Hasil Analisis:")
                 sentiment_counts = df['Sentiment'].value_counts()
                 st.bar_chart(sentiment_counts)  # This will create a bar chart from sentiment counts
