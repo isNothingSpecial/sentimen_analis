@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 from textblob import TextBlob
 import matplotlib.pyplot as plt
+
 # Function to analyze sentiment
 def analyze_sentiment(text):
     blob = TextBlob(text)
@@ -36,19 +37,15 @@ def main():
                 df['Sentiment'] = df[text_column].apply(analyze_sentiment)
                 st.write("Hasil Analisis Sentimen:")
                 st.write(df)
+                
+                # Create a line chart using Matplotlib
+                st.write("Creating a line chart:")
+                sentiment_counts = df['Sentiment'].value_counts()
+                st.line_chart(sentiment_counts)  # This will create a line chart from sentiment counts
             else:
                 st.write("Pilih kolom teks terlebih dahulu.")
 
 if __name__ == "__main__":
     main()
 
-
-# Create a line chart using Matplotlib
-st.write("Creating a line chart:")
-st.line_chart(dF)  # This will create a line chart from the DataFrame
-
-# Alternatively, using Matplotlib directly for more customization
-st.write("Creating a customized line chart:")
-plt.plot(df['X-Sentiment'], df['Y-Count'])  # Replace 'X-axis' and 'Y-axis' with your column names
-st.pyplot()  # Display the Matplotlib plot in Streamlit
-
+    
