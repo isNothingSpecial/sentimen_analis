@@ -41,7 +41,7 @@ def main():
                 # Create a line chart using Matplotlib
                 st.write("Visalisasi Rekap Hasil Analisis:")
                 sentiment_counts = df['Sentiment'].value_counts()
-                st.pie_chart(sentiment_counts)  # This will create a line chart from sentiment counts
+                st.bar_chart(sentiment_counts)  # This will create a line chart from sentiment counts
             else:
                 st.write("Pilih kolom teks terlebih dahulu.")
 
