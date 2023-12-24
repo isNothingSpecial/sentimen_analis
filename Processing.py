@@ -41,7 +41,7 @@ def main():
                 # Create a line chart using Matplotlib
                 st.write("Creating a line chart:")
                 sentiment_counts = df['Sentiment'].value_counts()
-                st.line_chart(sentiment_counts)  # This will create a line chart from sentiment counts
+                st.bar_chart(sentiment_counts)  # This will create a line chart from sentiment counts
             else:
                 st.write("Pilih kolom teks terlebih dahulu.")
 
