@@ -41,6 +41,7 @@ def main():
                 # Create a line chart using Matplotlib
                 st.write("Visalisasi Rekap Hasil Analisis:")
                 sentiment_counts = df['Sentiment'].value_counts()
+                fig, ax = plt.subplots()
                 ax.pie(sentiment_counts, labels=sentiment_counts.index, autopct='%1.1f%%', startangle=90)
                 ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
                 st.pyplot(fig)  # Display the Matplotlib plot in Streamlit
