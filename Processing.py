@@ -1,12 +1,15 @@
 import streamlit as st
 import pandas as pd
-from textblob import TextBlob
 import matplotlib.pyplot as plt
+import re
+import nltk
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier
-from wordcloud import WordCloud, STOPWORDS
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.feature_extraction.text import TfidfVectorizer
+from textblob import TextBlob
 
 # Function to analyze sentiment
 def analyze_sentiment(text):
@@ -19,12 +22,7 @@ def analyze_sentiment(text):
     else:
         return "Netral"
 
-X = data['comment']
-Y = data['sentimen']
-
-nltk.download('stopwords')
-
-
+# Function to preprocess text
 def preprocessing(text):
     text = str(text)
     text = text.lower()
@@ -38,20 +36,9 @@ def preprocessing(text):
     stemmed_tokens = [stemmer.stem(token) for token in filtered_tokens]
     return ' '.join(stemmed_tokens)
 
-X = X.apply(preprocessing)
-
-vectorizer = TfidfVectorizer()
-X = vectorizer.fit_transform(X)
-
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
-
-knn = KNeighborsClassifier(n_neighbors=5)
-knn.fit(X_train, Y_train)
-
-y_pred = knn.predict(X_test)
-
-# Main function
+# Streamlit App
 def main():
+    nltk.download('stopwords')
     st.title("Aplikasi Sentiment Analysis dengan Dataset CSV")
 
     # Upload CSV file
@@ -74,22 +61,38 @@ def main():
                 st.write("Hasil Analisis Sentimen:")
                 st.write(df)
                 
-                # Create a line chart using Matplotlib
+                # Create a bar chart using Matplotlib
                 st.write("Visualisasi Rekap Hasil Analisis:")
                 sentiment_counts = df['Sentiment'].value_counts()
-                st.bar_chart(sentiment_counts)  # This will create a line chart from sentiment counts
+                st.bar_chart(sentiment_counts)  # This will create a bar chart from sentiment counts
+                
+                # Preprocess data for classification
+                X = df[text_column].apply(preprocessing)
+                Y = df['sentimen']
+
+                vectorizer = TfidfVectorizer()
+                X = vectorizer.fit_transform(X)
+
+                X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+                knn = KNeighborsClassifier(n_neighbors=5)
+                knn.fit(X_train, Y_train)
+
+                y_pred = knn.predict(X_test)
+
+                # Evaluation metrics
+                accuracy = accuracy_score(Y_test, y_pred)
+                precision = precision_score(Y_test, y_pred, average='weighted')
+                recall = recall_score(Y_test, y_pred, average='weighted')
+                f1 = f1_score(Y_test, y_pred, average='weighted')
+
+                st.write('Evaluasi Model:')
+                st.write(f'Accuracy: {accuracy}')
+                st.write(f'Precision: {precision}')
+                st.write(f'Recall: {recall}')
+                st.write(f'F1 Score: {f1}')
             else:
                 st.write("Pilih kolom teks terlebih dahulu.")
 
 if __name__ == "__main__":
     main()
-
-accuracy = accuracy_score(Y_test, y_pred)
-precision = precision_score(Y_test, y_pred, average='weighted')
-recall = recall_score(Y_test, y_pred, average='weighted')
-f1 = f1_score(Y_test, y_pred, average='weighted')
-
-print('Accuracy:', accuracy)
-print('Precision:', precision)
-print('Recall:', recall)
-print('F1 Score:', f1)
