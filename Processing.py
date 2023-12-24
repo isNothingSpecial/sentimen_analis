@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from textblob import Textblob
+from textblob import TextBlob
 # Function to analyze sentiment
 def analyze_sentiment(text):
     blob = TextBlob(text)
