@@ -3,7 +3,7 @@ import pandas as pd
 from textblob import TextBlob
 import matplotlib.pyplot as plt
 import seaborn as sns
-import openpyxl
+from pd import openpyxl
 
 # Function to analyze sentiment
 def analyze_sentiment(text):
