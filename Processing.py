@@ -50,8 +50,8 @@ def main():
                     plt.title('Distribusi Sentimen')
                     plt.xlabel('Sentimen')
                     plt.ylabel('Jumlah')
-                    st.pyplot()
                     st.set_option('deprecation.showPyplotGlobalUse', False)
+                    st.pyplot()
 
                 else:
                     st.write("Pilih kolom teks terlebih dahulu.")
