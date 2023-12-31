@@ -51,6 +51,8 @@ def main():
                     plt.xlabel('Sentimen')
                     plt.ylabel('Jumlah')
                     st.set_option('deprecation.showPyplotGlobalUse', False)
+                    for index, value in enumerate(sentiment_counts.values):
+                        plt.text(index, value + 1, str(value), ha='center', va='bottom')
                     st.pyplot()
 
                 else:
