@@ -52,8 +52,9 @@ def main():
                 plt.xlabel('Sentimen')
                 plt.ylabel('Jumlah')
                 st.pyplot()
+                st.set_option('deprecation.showPyplotGlobalUse', False)
 
-            elif st.button("Analyze Sentiment") and text_column not in df.columns:
+           else :
                 st.write("Kolom teks tidak ditemukan.")
 
         except Exception as e:
