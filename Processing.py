@@ -3,7 +3,6 @@ import pandas as pd
 from textblob import TextBlob
 import matplotlib.pyplot as plt
 import seaborn as sns
-import openpyxl
 
 # Function to analyze sentiment
 def analyze_sentiment(text):
@@ -28,8 +27,10 @@ def main():
             # Read the file
             if uploaded_file.type == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
                 df = pd.read_excel(uploaded_file)
-            else:
+            elif uploaded_file.type == "text/csv":
                 df = pd.read_csv(uploaded_file)
+            else:
+                st.write("Tipe file tidak didukung. Gunakan file CSV atau Excel.")
 
             st.write("Data yang Diunggah:")
             st.write(df)
@@ -38,23 +39,22 @@ def main():
             text_column = st.selectbox("Pilih kolom teks:", df.columns)
 
             # Analyze sentiment for selected text column
-            if st.button("Analyze Sentiment"):
-                if text_column:
-                    df['Sentiment'] = df[text_column].apply(analyze_sentiment)
-                    st.write("Hasil Analisis Sentimen:")
-                    st.write(df)
+            if st.button("Analyze Sentiment") and text_column in df.columns:
+                df['Sentiment'] = df[text_column].apply(analyze_sentiment)
+                st.write("Hasil Analisis Sentimen:")
+                st.write(df)
 
-                    # Visualization - Bar Chart
-                    sentiment_counts = df['Sentiment'].value_counts()
-                    plt.figure(figsize=(8, 6))
-                    sns.barplot(x=sentiment_counts.index, y=sentiment_counts.values)
-                    plt.title('Distribusi Sentimen')
-                    plt.xlabel('Sentimen')
-                    plt.ylabel('Jumlah')
-                    st.pyplot()
+                # Visualization - Bar Chart
+                sentiment_counts = df['Sentiment'].value_counts()
+                plt.figure(figsize=(8, 6))
+                sns.barplot(x=sentiment_counts.index, y=sentiment_counts.values)
+                plt.title('Distribusi Sentimen')
+                plt.xlabel('Sentimen')
+                plt.ylabel('Jumlah')
+                st.pyplot()
 
-                else:
-                    st.write("Pilih kolom teks terlebih dahulu.")
+            elif st.button("Analyze Sentiment") and text_column not in df.columns:
+                st.write("Kolom teks tidak ditemukan.")
 
         except Exception as e:
             st.write("Terjadi kesalahan:", e)
