@@ -51,6 +51,7 @@ def main():
                     plt.xlabel('Sentimen')
                     plt.ylabel('Jumlah')
                     st.pyplot()
+                    st.set_option('deprecation.showPyplotGlobalUse', False)
 
                 else:
                     st.write("Pilih kolom teks terlebih dahulu.")
